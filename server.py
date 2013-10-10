@@ -1,3 +1,4 @@
+import os
 import psutil
 from flask import Flask, render_template
 
@@ -20,4 +21,5 @@ def stats():
     return render_template('stats.html', stats=stats)
 
 if __name__ == "__main__":
-    app.run()
+    port = os.environ.get('PORT', 5000)
+    app.run(port=int(port))
