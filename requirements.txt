@@ -1,2 +1,2 @@
-psutil==1.1.1
+psutil==1.0.1
 Flask==0.10.1
