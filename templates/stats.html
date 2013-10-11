@@ -6,8 +6,14 @@
     <body>
         <h1>Memory stats</h1>
         <ul>
-            {% for stat in stats %}
+            {% for stat in memorystats %}
                 <li>{{ stat }}</li>
+            {% endfor %}
+        </ul>
+        <h1>CPU stats</h1>
+        <ul>
+            {% for cpustat in cpustats %}
+                <li>{{ cpustat }}</li>
             {% endfor %}
         </ul>
     </body>

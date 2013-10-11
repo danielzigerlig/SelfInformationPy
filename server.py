@@ -5,20 +5,89 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 
-def get_memory_info():
-    memory = psutil.virtual_memory()
-    total = round(float(memory.total) / 1024 / 1024, 2)
-    available = round(float(memory.available) / 1024 / 1024, 2)
+def get_virtual_memory_info():
+    virtual_memory = psutil.virtual_memory()
+    total = round(float(virtual_memory.total) / 1024 / 1024, 2)
+    available = round(float(virtual_memory.available) / 1024 / 1024, 2)
     stats = []
+    stats.append('virtual memory')
     stats.append('Total memory: %s MB' % total)
     stats.append('Available memory: %s MB' % available)
-    stats.append('Percent used: %s%%' % memory.percent)
+    stats.append('Percent used: %s%%' % virtual_memory.percent)
     return stats
+
+
+def get_swap_memory_info():
+    memory = psutil.swap_memory()
+    total = round(float(memory.total) / 1024 / 1024, 2)
+    used = round(float(memory.used) / 1024 / 1024, 2)
+    free = round(float(memory.free) / 1024 / 1024, 2)
+    sin = round(float(memory.sin) / 1024 / 1024, 2)
+    sout = round(float(memory.sout) / 1024 / 1024, 2)
+
+    stats = []
+    stats.append('swap memory')
+    stats.append('Total memory: %s MB' % total)
+    stats.append('Used memory: %s MB' % used)
+    stats.append('Free memory: %s MB' % free)
+    stats.append('Percent used: %s%%' % memory.percent)
+    stats.append('Sin: %s MB' % sin)
+    stats.append('Sout: %s MB' % sout)
+
+    return stats
+
+
+def get_memory_info():
+    return get_virtual_memory_info() + get_swap_memory_info()
+
+
+def get_cpu_time_info():
+    time = psutil.cpu_times()
+    stats = []
+    stats.append('Cpu time info')
+    stats.append('user: %s' % time.user)
+    stats.append('nice: %s' % time.nice)
+    stats.append('system: %s' % time.system)
+    stats.append('idle: %s' % time.idle)
+    stats.append('iowait: %s' % time.iowait)
+    stats.append('irq: %s' % time.irq)
+    stats.append('softirq: %s' % time.softirq)
+    return stats
+
+
+def get_cpu_percent_info():
+    #cpu_percent = psutil.cpu_times_percent(interval=1)
+    stats = []
+    stats.append('Cpu percent info')
+    #stats.append('user: %s' % cpu_percent[0].user)
+    #stats.append('nice: %s' % cpu_percent[0].user)
+    #stats.append('system: %s' % cpu_percent[0].user)
+    #stats.append('idle: %s' % cpu_percent[0].user)
+    #stats.append('iowait: %s' % cpu_percent[0].user)
+    #stats.append('irq: %s' % cpu_percent[0].user)
+    #stats.append('softirq: %s' % cpu_percent[0].user)
+    #stats.append('steal: %s' % cpu_percent[0].user)
+    #stats.append('guest: %s' % cpu_percent[0].user)
+    #stats.append('guest_nice: %s' % cpu_percent[0].user)
+    return stats
+
+
+def get_cpu_num_cpus_info():
+    stats = []
+    stats.append('num cpus: %s' % psutil.NUM_CPUS)
+    return stats
+
+
+def get_cpu_info():
+    return get_cpu_time_info
+
 
 @app.route("/")
 def stats():
-    stats = get_memory_info()
-    return render_template('stats.html', stats=stats)
+    memorystats = get_memory_info()
+    cpustats = get_cpu_info()
+    return render_template('stats.html', memorystats=memorystats)
+
 
 if __name__ == "__main__":
     port = os.environ.get('PORT', 5000)
