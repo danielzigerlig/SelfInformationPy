@@ -17,6 +17,7 @@ def get_virtual_memory_info():
     return stats
 
 
+
 def get_swap_memory_info():
     memory = psutil.swap_memory()
     total = round(float(memory.total) / 1024 / 1024, 2)
@@ -61,15 +62,15 @@ def get_cpu_percent_info():
     stats = []
     stats.append('Cpu percent info')
     stats.append('user: %s' % cpu_percent.user)
-    stats.append('nice: %s' % cpu_percent.user)
-    stats.append('system: %s' % cpu_percent.user)
-    stats.append('idle: %s' % cpu_percent.user)
-    stats.append('iowait: %s' % cpu_percent.user)
-    stats.append('irq: %s' % cpu_percent.user)
-    stats.append('softirq: %s' % cpu_percent.user)
-    stats.append('steal: %s' % cpu_percent.user)
-    stats.append('guest: %s' % cpu_percent.user)
-    stats.append('guest_nice: %s' % cpu_percent.user)
+    stats.append('nice: %s' % cpu_percent.nice)
+    stats.append('system: %s' % cpu_percent.system)
+    stats.append('idle: %s' % cpu_percent.idle)
+    #stats.append('iowait: %s' % cpu_percent.iowait)
+    #stats.append('irq: %s' % cpu_percent.irq)
+    #stats.append('softirq: %s' % cpu_percent.softirq)
+    #stats.append('steal: %s' % cpu_percent.steal)
+    #stats.append('guest: %s' % cpu_percent.guest)
+    #stats.append('guest_nice: %s' % cpu_percent.guest_nice)
     return stats
 
 def get_cpu_info():
