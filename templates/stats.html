@@ -6,13 +6,13 @@
     <body>
         <h1>Memory stats</h1>
         <ul>
-            {% for stat in memorystats %}
+            {% for stat in myContext[0] %}
                 <li>{{ stat }}</li>
             {% endfor %}
         </ul>
         <h1>CPU stats</h1>
         <ul>
-            {% for cpustat in cpustats %}
+            {% for cpustat in myContext[1] %}
                 <li>{{ cpustat }}</li>
             {% endfor %}
         </ul>

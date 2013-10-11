@@ -42,51 +42,46 @@ def get_memory_info():
 
 
 def get_cpu_time_info():
-    time = psutil.cpu_times()
+    cpu_time = psutil.cpu_times()
     stats = []
+    stats.append('num cpus: %s' % psutil.NUM_CPUS)
     stats.append('Cpu time info')
-    stats.append('user: %s' % time.user)
-    stats.append('nice: %s' % time.nice)
-    stats.append('system: %s' % time.system)
-    stats.append('idle: %s' % time.idle)
-    stats.append('iowait: %s' % time.iowait)
-    stats.append('irq: %s' % time.irq)
-    stats.append('softirq: %s' % time.softirq)
+    stats.append('user: %s' % cpu_time.user)
+    stats.append('nice: %s' % cpu_time.nice)
+    stats.append('system: %s' % cpu_time.system)
+    stats.append('idle: %s' % cpu_time.idle)
+    #stats.append('iowait: %s' % cpu_time.iowait)
+    #stats.append('irq: %s' % cpu_time.irq)
+    #stats.append('softirq: %s' % cpu_time.softirq)
     return stats
 
 
 def get_cpu_percent_info():
-    #cpu_percent = psutil.cpu_times_percent(interval=1)
+    cpu_percent = psutil.cpu_times_percent(interval=1)
     stats = []
     stats.append('Cpu percent info')
-    #stats.append('user: %s' % cpu_percent[0].user)
-    #stats.append('nice: %s' % cpu_percent[0].user)
-    #stats.append('system: %s' % cpu_percent[0].user)
-    #stats.append('idle: %s' % cpu_percent[0].user)
-    #stats.append('iowait: %s' % cpu_percent[0].user)
-    #stats.append('irq: %s' % cpu_percent[0].user)
-    #stats.append('softirq: %s' % cpu_percent[0].user)
-    #stats.append('steal: %s' % cpu_percent[0].user)
-    #stats.append('guest: %s' % cpu_percent[0].user)
-    #stats.append('guest_nice: %s' % cpu_percent[0].user)
+    stats.append('user: %s' % cpu_percent.user)
+    stats.append('nice: %s' % cpu_percent.user)
+    stats.append('system: %s' % cpu_percent.user)
+    stats.append('idle: %s' % cpu_percent.user)
+    stats.append('iowait: %s' % cpu_percent.user)
+    stats.append('irq: %s' % cpu_percent.user)
+    stats.append('softirq: %s' % cpu_percent.user)
+    stats.append('steal: %s' % cpu_percent.user)
+    stats.append('guest: %s' % cpu_percent.user)
+    stats.append('guest_nice: %s' % cpu_percent.user)
     return stats
-
-
-def get_cpu_num_cpus_info():
-    stats = []
-    stats.append('num cpus: %s' % psutil.NUM_CPUS)
-    return stats
-
 
 def get_cpu_info():
-    return get_cpu_time_info
+    return get_cpu_time_info() + get_cpu_percent_info()
 
 
 @app.route("/")
 def stats():
     memorystats = get_memory_info()
     cpustats = get_cpu_info()
-    return render_template('stats.html', memorystats=memorystats)
+    myContext = [memorystats, cpustats]
+    return render_template('stats.html', myContext=myContext)
 
 
 if __name__ == "__main__":
